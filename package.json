@@ -1,0 +1,30 @@
+{
+  "name": "canopy",
+  "description": "library for converting json into table using properties",
+  "version": "0.0.1",
+  "private": false,
+  "main": "./src/canopy.js",
+  "author": "Tyler Parker and Gregory Thompson",
+  "keywords": [
+    "json"
+  ],
+  "dependencies": {
+    "lodash": "latest"
+  },
+  "devDependencies": {
+    "grunt": "latest",
+    "jasmine-node": "latest",
+    "grunt-jslint": "latest",
+    "grunt-browserify": "latest",
+    "grunt-contrib-jasmine": "latest",
+    "grunt-template-jasmine-requirejs": "latest",
+    "grunt-jasmine-node": "latest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GTDev87/canopy.git"
+  },
+  "engines": {
+    "node": "*"
+  }
+}
