@@ -14,11 +14,9 @@ dependencies({
 }).init(this, function (canopy) {
     'use strict';
 
-    console.log("canopy = %j", canopy);
-
-    describe("inspectTree", function () {
-        it("should give a summary of tree at level", function () {
-            expect(true).toEqual(true);
+    describe("functionName", function () {
+        it("should do what function says", function () {
+            expect(canopy).toEqual(false);
         });
     });
 });
