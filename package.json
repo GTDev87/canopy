@@ -1,10 +1,10 @@
 {
   "name": "canopy",
-  "description": "library description",
+  "description": "describes json objects",
   "version": "0.0.0",
   "private": false,
   "main": "./src/canopy.js",
-  "author": "",
+  "author": "Gregory Thompson and Tyler Parker",
   "keywords": [
     "json"
   ],
@@ -19,6 +19,10 @@
     "grunt-contrib-jasmine": "latest",
     "grunt-template-jasmine-requirejs": "latest",
     "grunt-jasmine-node": "latest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GTDev87/canopy.git"
   },
   "engines": {
     "node": "*"
