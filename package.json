@@ -9,6 +9,8 @@
     "json"
   ],
   "dependencies": {
+    "lodash": "latest",
+    "sproutid": "latest"
   },
   "devDependencies": {
     "grunt": "latest",

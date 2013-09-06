@@ -1,18 +1,32 @@
 /*jslint node: true, nomen: true */
 'use strict';
 
-function canopy() {
-    function functionName() {
+var sproutid = require("sproutid"),
+    _ = require("lodash");
+
+function jsonDataFuntion(jsonData) {
+    function uriIndex(uri) {
+        var uriParts = uri.split("/");
+        return _.reduce(
+            uriParts,
+            function (indexedJsonData, uriIndex) {return indexedJsonData[uriIndex]; },
+            jsonData
+        );
+    }
+
+    function describe(uri) {
+        console.log("the uri is %j", uri);
         return;
     }
 
     return {
-        functionName: functionName
+        uriIndex: uriIndex,
+        describe: describe
     };
 }
 
 module.exports = {
     name: "canopy",
     version: "0.0.0",
-    canopy: canopy
+    json: jsonDataFuntion
 };
