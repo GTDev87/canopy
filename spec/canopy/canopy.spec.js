@@ -76,7 +76,22 @@ dependencies({
         it("should return false if all values are not objects", function () {
             expect(canopyJson.hasObjectValues("0")).toEqual(false);
         });
+    });
 
-
+    describe("describe", function () {
+        it("should return common properties of object", function () {
+            expect(canopyJson.describeArrayLike("/")).toEqual(
+                {
+                    keys: ["0", "1", "2"],
+                    values: {
+                        user: 3,
+                        text: 3,
+                        id: 3,
+                        url: 3,
+                        followers_count: 3
+                    }
+                }
+            );
+        });
     });
 });
