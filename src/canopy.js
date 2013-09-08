@@ -5,8 +5,12 @@ var sproutid = require("sproutid"),
     _ = require("lodash");
 
 function jsonDataFuntion(jsonData) {
+    function splitUri(uri) {
+        return _.filter(uri.split("/"), function (uriPart) {return uriPart.length > 0; });
+    }
+
     function uriIndex(uri) {
-        var uriParts = uri.split("/");
+        var uriParts = splitUri(uri);
         return _.reduce(
             uriParts,
             function (indexedJsonData, uriIndex) {return indexedJsonData[uriIndex]; },
@@ -14,12 +18,26 @@ function jsonDataFuntion(jsonData) {
         );
     }
 
+    function hasObjectValues(uri) {
+        var examinedJson = uriIndex(uri);
+
+        return _.chain(examinedJson)
+            .values()
+            .every(function (jsonValue) {return typeof jsonValue === "object"; });
+    }
+
     function describe(uri) {
-        console.log("the uri is %j", uri);
+        var jsonLevel = uriIndex(uri);
+        hasObjectValues(uri);
+        console.log("the jsonLevel is %j", jsonLevel);
+
+
         return;
     }
 
     return {
+        splitUri: splitUri,
+        hasObjectValues: hasObjectValues,
         uriIndex: uriIndex,
         describe: describe
     };

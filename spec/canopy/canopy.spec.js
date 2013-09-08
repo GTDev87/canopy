@@ -56,4 +56,27 @@ dependencies({
             expect(canopyJson.uriIndex("1/user/name")).toEqual("Tyler");
         });
     });
+
+    describe("splitUri", function () {
+        it("should split the uri into parts", function () {
+            expect(canopyJson.splitUri("1/user/name")).toEqual(["1", "user", "name"]);
+        });
+
+        it("should split the uri into parts ignoring empty elements", function () {
+            expect(canopyJson.splitUri("/1/user/name")).toEqual(["1", "user", "name"]);
+        });
+    });
+
+    describe("hasObjectValues", function () {
+        it("should return true if all values are objects", function () {
+            expect(canopyJson.hasObjectValues("/")).toEqual(true);
+            expect(canopyJson.hasObjectValues("")).toEqual(true);
+        });
+
+        it("should return false if all values are not objects", function () {
+            expect(canopyJson.hasObjectValues("0")).toEqual(false);
+        });
+
+
+    });
 });
