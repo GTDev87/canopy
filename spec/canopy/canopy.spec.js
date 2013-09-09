@@ -23,8 +23,7 @@ dependencies({
                 },
                 text: "This is a Tweet",
                 id: "123123123",
-                url: "greg@greg.com",
-                followers_count: 42
+                url: "greg@greg.com"
             },
             {
                 user: {
@@ -35,7 +34,7 @@ dependencies({
                 text: "Lisa!!!!",
                 id: "234234234",
                 url: "tyler@tylwer.com",
-                followers_count: 123
+                followers_count: 42
             },
             {
                 user: {
@@ -78,6 +77,18 @@ dependencies({
         });
     });
 
+    describe("hasArrayStructure", function () {
+        it("should return true if all keys are 0 to keys - 1", function () {
+            expect(canopyJson.hasArrayStructure({0: "a", 1: "b", 2: "c"})).toEqual(true);
+            expect(canopyJson.hasArrayStructure(["a", "b", "c"])).toEqual(true);
+        });
+
+        it("should return false if all keys are not 0 to keys - 1", function () {
+            expect(canopyJson.hasArrayStructure({0: "a", 2: "c"})).toEqual(false);
+            expect(canopyJson.hasArrayStructure({a: "a", b: "b"})).toEqual(false);
+        });
+    });
+
     describe("describe", function () {
         it("should return common properties of object", function () {
             expect(canopyJson.describeArrayLike("/")).toEqual(
@@ -88,7 +99,7 @@ dependencies({
                         text: 3,
                         id: 3,
                         url: 3,
-                        followers_count: 3
+                        followers_count: 2
                     }
                 }
             );

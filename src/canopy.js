@@ -26,6 +26,12 @@ function jsonDataFuntion(jsonData) {
             .every(function (jsonValue) {return typeof jsonValue === "object"; });
     }
 
+    function hasArrayStructure(jsonObject) {
+        var keys = _.keys(jsonObject),
+            stringRange = _.map(_.range(_.keys(jsonObject).length), function (intVal) {return intVal.toString(); });
+        return _.isEqual(keys, stringRange);
+    }
+
     function describeArrayLike(uri) {
 
         if (!hasObjectValues(uri)) {
@@ -75,7 +81,8 @@ function jsonDataFuntion(jsonData) {
         splitUri: splitUri,
         hasObjectValues: hasObjectValues,
         uriIndex: uriIndex,
-        describeArrayLike: describeArrayLike
+        describeArrayLike: describeArrayLike,
+        hasArrayStructure: hasArrayStructure
     };
 }
 
