@@ -89,17 +89,49 @@ dependencies({
         });
     });
 
-    describe("describe", function () {
-        it("should return common properties of object", function () {
+    describe("describeArrayLike", function () {
+        it("should return common properties of array of Objects", function () {
             expect(canopyJson.describeArrayLike("/")).toEqual(
                 {
-                    keys: ["0", "1", "2"],
+                    keys: {
+                        type: "array",
+                        numElements: 3
+                    },
                     values: {
                         user: 3,
                         text: 3,
                         id: 3,
                         url: 3,
                         followers_count: 2
+                    }
+                }
+            );
+        });
+
+        it("should return common properties of object values of Objects", function () {
+            var objectOfObjects = {
+                Greg: {
+                    skill: "Engineer"
+                },
+                Tyler: {
+                    skill: "Data Artist"
+                },
+                David: {
+                    skill: "Datamancer"
+                }
+            },
+                canopySkillJson;
+
+            canopySkillJson = canopy.json(objectOfObjects);
+
+            expect(canopySkillJson.describeArrayLike("/")).toEqual(
+                {
+                    keys: {
+                        type: "object",
+                        names: ["Greg", "Tyler", "David"]
+                    },
+                    values: {
+                        skill: 3
                     }
                 }
             );

@@ -41,7 +41,17 @@ function jsonDataFuntion(jsonData) {
         var jsonLevel = uriIndex(uri),
             descriptionObject = {};
 
-        descriptionObject.keys = _.keys(jsonLevel);
+        descriptionObject.keys = {};
+
+        if (hasArrayStructure(jsonLevel)) {
+            descriptionObject.keys.type = "array";
+            descriptionObject.keys.numElements = _.keys(jsonLevel).length;
+        } else {
+            descriptionObject.keys.type = "object";
+            descriptionObject.keys.names = _.keys(jsonLevel);
+        }
+
+
         descriptionObject.values = _.chain(jsonLevel)
             .values()
             .reduce(
