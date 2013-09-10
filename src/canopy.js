@@ -29,28 +29,92 @@ function jsonDataFuntion(jsonData) {
     function hasArrayStructure(jsonObject) {
         var keys = _.keys(jsonObject),
             stringRange = _.map(_.range(_.keys(jsonObject).length), function (intVal) {return intVal.toString(); });
+
+        if (typeof jsonObject === "string") {
+            return false;
+        }
+
         return _.isEqual(keys, stringRange);
     }
 
-    function describeArrayLike(uri) {
-
-        if (!hasObjectValues(uri)) {
-            throw new Error("you are trying to describe something not arraylike");
+    function arrayStructureKeyDescription(jsonLevel) {
+        var keyDescription = {};
+        if (hasArrayStructure(jsonLevel)) {
+            keyDescription.type = "array";
+            keyDescription.numElements = _.keys(jsonLevel).length;
+        } else {
+            keyDescription.type = "object";
+            keyDescription.names = _.keys(jsonLevel);
         }
 
+        return keyDescription;
+    }
+
+    function describe(uri) {
+        console.log(uri);
+    }
+
+    function describePrimitive(uri) {
+        var descriptionObject = {},
+            jsonLevel = uriIndex(uri);
+
+        if (hasArrayStructure(jsonLevel)) {
+            throw new Error("the data is array like");
+        }
+
+        descriptionObject.keys = {};
+        descriptionObject.keys.type = "primitive";
+
+        descriptionObject.values = {};
+        descriptionObject.values.type = typeof jsonLevel;
+        descriptionObject.values.value = jsonLevel;
+        return descriptionObject;
+    }
+
+    function describeNonObjectArrayLike(uri) {
+        var descriptionObject = {},
+            jsonLevel = uriIndex(uri);
+
+        if (!arrayStructureKeyDescription(jsonLevel)) {
+            throw new Error("the data is not array like");
+        }
+
+        if (hasObjectValues(uri)) {
+            throw new Error("you are trying to describe something is object array like");
+        }
+        descriptionObject.keys = arrayStructureKeyDescription(jsonLevel);
+
+        descriptionObject.values = _.chain(jsonLevel)
+            .values()
+            .reduce(
+                function (aggValueObject, curVal) {
+                    var curValType = typeof curVal;
+                    if (aggValueObject[curValType] === undefined) {
+                        aggValueObject[curValType] = 0;
+                    }
+                    aggValueObject[curValType] = aggValueObject[curValType] + 1;
+                    return aggValueObject;
+                },
+                {}
+            );
+
+        return descriptionObject;
+    }
+
+    function describeObjectArrayLike(uri) {
         var jsonLevel = uriIndex(uri),
             descriptionObject = {};
 
-        descriptionObject.keys = {};
-
-        if (hasArrayStructure(jsonLevel)) {
-            descriptionObject.keys.type = "array";
-            descriptionObject.keys.numElements = _.keys(jsonLevel).length;
-        } else {
-            descriptionObject.keys.type = "object";
-            descriptionObject.keys.names = _.keys(jsonLevel);
+        if (!arrayStructureKeyDescription(jsonLevel)) {
+            throw new Error("the data is not array like");
         }
 
+        if (!hasObjectValues(uri)) {
+            throw new Error("you are trying to describe something not object array like");
+        }
+
+
+        descriptionObject.keys = arrayStructureKeyDescription(jsonLevel);
 
         descriptionObject.values = _.chain(jsonLevel)
             .values()
@@ -91,8 +155,11 @@ function jsonDataFuntion(jsonData) {
         splitUri: splitUri,
         hasObjectValues: hasObjectValues,
         uriIndex: uriIndex,
-        describeArrayLike: describeArrayLike,
-        hasArrayStructure: hasArrayStructure
+        describeObjectArrayLike: describeObjectArrayLike,
+        hasArrayStructure: hasArrayStructure,
+        describeNonObjectArrayLike: describeNonObjectArrayLike,
+        describePrimitive: describePrimitive,
+        describe: describe
     };
 }
 

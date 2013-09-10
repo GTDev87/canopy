@@ -89,9 +89,9 @@ dependencies({
         });
     });
 
-    describe("describeArrayLike", function () {
+    describe("describeObjectArrayLike", function () {
         it("should return common properties of array of Objects", function () {
-            expect(canopyJson.describeArrayLike("/")).toEqual(
+            expect(canopyJson.describeObjectArrayLike("/")).toEqual(
                 {
                     keys: {
                         type: "array",
@@ -124,7 +124,7 @@ dependencies({
 
             canopySkillJson = canopy.json(objectOfObjects);
 
-            expect(canopySkillJson.describeArrayLike("/")).toEqual(
+            expect(canopySkillJson.describeObjectArrayLike("/")).toEqual(
                 {
                     keys: {
                         type: "object",
@@ -132,6 +132,60 @@ dependencies({
                     },
                     values: {
                         skill: 3
+                    }
+                }
+            );
+        });
+    });
+    describe("describeNonObjectArrayLike", function () {
+        it("should describe objects value types", function () {
+            var array = ["hello", "my", "name", "is", "elder", "price"],
+                canopyWordJson = canopy.json(array);
+
+            expect(canopyWordJson.describeNonObjectArrayLike("/")).toEqual(
+                {
+                    keys: {
+                        type: "array",
+                        numElements: 6
+                    },
+                    values: {
+                        string: 6
+                    }
+                }
+            );
+        });
+
+        it("should describe different object value types", function () {
+            var array = {a: "hello", b: 1, c: "name", d: {}, e: "elder", f: 2, g: {1: 2}},
+                canopyWordJson = canopy.json(array);
+
+            expect(canopyWordJson.describeNonObjectArrayLike("/")).toEqual(
+                {
+                    keys: {
+                        type: "object",
+                        names: ["a", "b", "c", "d", "e", "f", "g"]
+                    },
+                    values: {
+                        string: 3,
+                        number: 2,
+                        object: 2
+                    }
+                }
+            );
+        });
+    });
+    describe("describePrimitive", function () {
+        it("should describe primitive data", function () {
+            var canopyWordJson = canopy.json("hello");
+
+            expect(canopyWordJson.describePrimitive("/")).toEqual(
+                {
+                    keys: {
+                        type: "primitive"
+                    },
+                    values: {
+                        type: 'string',
+                        value: 'hello'
                     }
                 }
             );
