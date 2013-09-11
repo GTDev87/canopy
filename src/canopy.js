@@ -74,9 +74,6 @@ function jsonDataFuntion(jsonData) {
         var descriptionObject = {},
             jsonLevel = uriIndex(uri);
 
-        console.log("jsonLevel = %j", jsonLevel);
-        console.log("describeNonObjectArrayLike hasArrayStructure(jsonLevel) = %j", hasArrayStructure(jsonLevel));
-
         if (isPrimitive(jsonLevel)) {
             throw new Error("data is primitive");
         }
