@@ -18,10 +18,8 @@ function jsonDataFuntion(jsonData) {
         );
     }
 
-    function hasObjectValues(uri) {
-        var examinedJson = uriIndex(uri);
-
-        return _.chain(examinedJson)
+    function hasObjectValues(jsonObject) {
+        return _.chain(jsonObject)
             .values()
             .every(function (jsonValue) {return typeof jsonValue === "object"; });
     }
@@ -50,16 +48,17 @@ function jsonDataFuntion(jsonData) {
         return keyDescription;
     }
 
-    function describe(uri) {
-        console.log(uri);
+    function isPrimitive(data) {
+        var typeofData = typeof data;
+        return typeofData !== "object" && typeofData !== "array";
     }
 
     function describePrimitive(uri) {
         var descriptionObject = {},
             jsonLevel = uriIndex(uri);
 
-        if (hasArrayStructure(jsonLevel)) {
-            throw new Error("the data is array like");
+        if (!isPrimitive(jsonLevel)) {
+            throw new Error("data is not primitive");
         }
 
         descriptionObject.keys = {};
@@ -75,11 +74,14 @@ function jsonDataFuntion(jsonData) {
         var descriptionObject = {},
             jsonLevel = uriIndex(uri);
 
-        if (!arrayStructureKeyDescription(jsonLevel)) {
-            throw new Error("the data is not array like");
+        console.log("jsonLevel = %j", jsonLevel);
+        console.log("describeNonObjectArrayLike hasArrayStructure(jsonLevel) = %j", hasArrayStructure(jsonLevel));
+
+        if (isPrimitive(jsonLevel)) {
+            throw new Error("data is primitive");
         }
 
-        if (hasObjectValues(uri)) {
+        if (hasObjectValues(jsonLevel)) {
             throw new Error("you are trying to describe something is object array like");
         }
         descriptionObject.keys = arrayStructureKeyDescription(jsonLevel);
@@ -105,11 +107,11 @@ function jsonDataFuntion(jsonData) {
         var jsonLevel = uriIndex(uri),
             descriptionObject = {};
 
-        if (!arrayStructureKeyDescription(jsonLevel)) {
-            throw new Error("the data is not array like");
+        if (isPrimitive(jsonLevel)) {
+            throw new Error("data is primitive");
         }
 
-        if (!hasObjectValues(uri)) {
+        if (!hasObjectValues(jsonLevel)) {
             throw new Error("you are trying to describe something not object array like");
         }
 
@@ -149,6 +151,20 @@ function jsonDataFuntion(jsonData) {
                 {}
             );
         return descriptionObject;
+    }
+
+    function describe(uri) {
+        var jsonLevel = uriIndex(uri);
+
+        if (isPrimitive(jsonLevel)) {
+            return describePrimitive(uri);
+        }
+
+        if (hasObjectValues(jsonLevel)) {
+            return describeObjectArrayLike(uri);
+        }
+
+        return describeNonObjectArrayLike(uri);
     }
 
     return {

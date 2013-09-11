@@ -68,12 +68,13 @@ dependencies({
 
     describe("hasObjectValues", function () {
         it("should return true if all values are objects", function () {
-            expect(canopyJson.hasObjectValues("/")).toEqual(true);
-            expect(canopyJson.hasObjectValues("")).toEqual(true);
+
+            expect(canopyJson.hasObjectValues(canopyJson.uriIndex("/"))).toEqual(true);
+            expect(canopyJson.hasObjectValues(canopyJson.uriIndex(""))).toEqual(true);
         });
 
         it("should return false if all values are not objects", function () {
-            expect(canopyJson.hasObjectValues("0")).toEqual(false);
+            expect(canopyJson.hasObjectValues(canopyJson.uriIndex("0"))).toEqual(false);
         });
     });
 
@@ -186,6 +187,53 @@ dependencies({
                     values: {
                         type: 'string',
                         value: 'hello'
+                    }
+                }
+            );
+        });
+    });
+
+    describe("describe", function () {
+        it("should describe array like data when data is array like", function () {
+            expect(canopyJson.describe("/")).toEqual(
+                {
+                    keys: {
+                        type: "array",
+                        numElements: 3
+                    },
+                    values: {
+                        user: 3,
+                        text: 3,
+                        id: 3,
+                        url: 3,
+                        followers_count: 2
+                    }
+                }
+            );
+        });
+        it("should desribe primitive data when data is primitive", function () {
+            expect(canopyJson.describe("/0/text")).toEqual(
+                {
+                    keys: {
+                        type: "primitive"
+                    },
+                    values: {
+                        type: 'string',
+                        value: 'This is a Tweet'
+                    }
+                }
+            );
+        });
+        it("should describe mixed data when data is mixed", function () {
+            expect(canopyJson.describe("/0")).toEqual(
+                {
+                    keys: {
+                        type: "object",
+                        names: ['user', 'text', 'id', 'url']
+                    },
+                    values: {
+                        object: 1,
+                        string: 3
                     }
                 }
             );
